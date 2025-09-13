@@ -29,7 +29,7 @@ yes | "$CMDLINE_TOOLS/latest/bin/sdkmanager" --licenses
 
 # 6. Setup project variables
 cd "$PROJECT_DIR" || exit
-echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
+echo "sdk.dir=$ANDROID_SDK_ROOT" >> local.properties
 
 # 7. Done
 echo "Android SDK setup complete."
