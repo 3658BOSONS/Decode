@@ -1,3 +1,4 @@
 dependencies {
-	implementation files('lib/Robotics.jar')
+	implementation files('lib/Robotics.jar');
+	implementation 'com.diogonunes:JColor:5.5.1';
 };
