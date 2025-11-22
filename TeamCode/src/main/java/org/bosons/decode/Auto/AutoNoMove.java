@@ -1,30 +1,32 @@
-package org.bosons.decode;
+package org.bosons.decode.Auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import org.bosons.decode.Modules.Webcam;
+import org.bosons.decode.Modules.Launcher;
+import org.bosons.decode.Robot;
+import org.bosons.decode.Season;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 import java.util.List;
 
-@Autonomous(name = "Auto (Temp)", group = "Decode")
-public class Auto extends OpMode {
+@Autonomous(name = "Auto [Don't move] (Temp)", group = "Decode")
+public class AutoNoMove extends OpMode {
 	private Robot robot = null;
-	private Webcam.Reference webcam = null;
-	private VisionPortal portal = null;
+	private final Launcher<Season.Ball> launcher = null;
+
+	// private VisionPortal portal = null;
 
 	@Override
 	public void init() {
-		this.robot = new Robot(this.hardwareMap, this.telemetry, List.of());
+		this.robot = new Robot(this.hardwareMap, this.telemetry);
 
-		// this.webcam = this.robot.topWebcam.request(this.hardwareMap, List.of(Webcam.aprilTagProcessor));
-		// this.portal = this.webcam.getVisionPortal();
+		// - this.webcam = this.robot.topWebcam.request(this.hardwareMap, List.of(Webcam.aprilTagProcessor));
+		// - this.portal = this.webcam.getVisionPortal();
 	};
 
 	@Override
 	public void start() {
-		this.robot.drive.arcadeDrive(1, 0, 100); // TODO: Autonomous
 
 
 	};

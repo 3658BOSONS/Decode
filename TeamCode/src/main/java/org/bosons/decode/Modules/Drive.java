@@ -5,16 +5,15 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Drive {
-    public DcMotor leftDrive = null;
-    public DcMotor rightDrive = null;
-
     // Constants based on the 5203 Series Yellow Jacket Planetary Gear Motor (5.2:1)
     public static final double COUNTS_PER_MOTOR_REV = 537.7; // 145.6
-    // Assumed wheel diameter
     public static final double WHEEL_DIAMETER_MM = 96.0;
     public static final double COUNTS_PER_MM = COUNTS_PER_MOTOR_REV / (WHEEL_DIAMETER_MM * Math.PI);
-    // Assumed distance between the center of the wheels
+    // Distance between the center of the wheels
     public static final double TRACK_WIDTH_MM = 270.0;
+
+    public DcMotor leftDrive = null;
+    public DcMotor rightDrive = null;
 
 
     public Drive(HardwareMap hardwareMap) {
@@ -51,7 +50,7 @@ public class Drive {
     };
 
     public void arcadeDrive(double magnitude, double direction, double millimeters) {
-        // --- Setup ---
+        // # Setup
         if (Math.abs(magnitude) < 0.01 && Math.abs(direction) < 0.01) {
             this.setPower(0, 0);
             return;
@@ -61,7 +60,7 @@ public class Drive {
         int travelDirection = (int) Math.signum(magnitude);
         double speed = Math.abs(magnitude);
 
-        // --- Handle Point Turns (magnitude is negligible) ---
+        // # Handle Point Turns (magnitude is negligible)
         if (speed < 0.01) {
             // 'distance' defines wheel travel for a point turn
             int turnTicks = (int) (distance * COUNTS_PER_MM);
@@ -84,7 +83,7 @@ public class Drive {
             return;
         };
 
-        // --- Handle Arc Turns (driving forward/backward with turning) ---
+        // # Handle Arc Turns (driving forward/backward with turning)
 
         // 1. Calculate initial power distribution for each wheel
         double leftPower = speed + direction;
@@ -100,7 +99,6 @@ public class Drive {
         };
 
         // 3. Calculate the distance each wheel needs to travel
-        // Assumes 'distance' is the distance for the robot's center.
         // Wheel distance is proportional to its speed relative to the center's speed.
         double leftDistance = distance * (Math.abs(leftPower) / speed);
         double rightDistance = distance * (Math.abs(rightPower) / speed);
@@ -117,7 +115,7 @@ public class Drive {
         this.rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         // Set motor power (absolute value for RUN_TO_POSITION)
-        // Power is set to the scaled values, ensuring the robot moves at the desired 'speed'.
+        // Power is set to the scaled values, ensuring the robot moves at the correct speed.
         this.leftDrive.setPower(Math.abs(leftPower));
         this.rightDrive.setPower(Math.abs(rightPower));
     };
