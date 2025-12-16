@@ -2,7 +2,7 @@ package org.bosons.decode.Modules;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -23,16 +23,18 @@ public class Launcher<P extends Launcher.Projectile> {
 
 	public static final double LIFTER_POWER = (double) 1 / 1;
 
-	public static final double FLYWHEEL_POWER_LAUNCHING = (double) 1 / 2;
+	public static final double FLYWHEEL_POWER_LAUNCHING = (double) 3 / 4;
 	public static final double FLYWHEEL_POWER_TURBO_LAUNCHING = (double) 1;
 
-	public static final double FLYWHEEL_POWER_COLLECTING = (double) 1 / 3;
+	public static final double FLYWHEEL_POWER_COLLECTING = (double) 1 / 6;
+
+	public static final double DAMPENING = (double)  1 / 5;
 
 	public Launcher.Mode mode = Launcher.Mode.IDLE;
 
 	private DcMotor lifter = null;
 	private DcMotor flywheels= null;
-	private CRServo pusher = null;
+	private Servo pusher = null;
 	private Telemetry telemetry = null;
 
 	public List<P> contents;
@@ -45,9 +47,9 @@ public class Launcher<P extends Launcher.Projectile> {
 		this.lifter.setMode(DcMotor.RunMode.RUN_USING_ENCODER); // ! Never disable
 		this.lifter.setDirection(DcMotor.Direction.FORWARD);
 
-		this.pusher = hardwareMap.get(CRServo.class, "pusher");
+		this.pusher = hardwareMap.get(Servo.class, "pusher");
 
-		this.pusher.setDirection(CRServo.Direction.FORWARD);
+		this.pusher.setDirection(Servo.Direction.FORWARD);
 
 		this.flywheels = hardwareMap.get(DcMotor.class, "flywheels");
 
@@ -90,9 +92,9 @@ public class Launcher<P extends Launcher.Projectile> {
 		// TODO(Brendan, Edmond): Implement
 	};
 
-	public void push(double position) {
+	public void push(double amount) {
 		// Push the hand.
-		this.pusher.setPower(position);
+		this.pusher.setPosition(this.pusher.getPosition() + amount / Launcher.DAMPENING);
 	};
 
 	public void aimPower(double power) {
